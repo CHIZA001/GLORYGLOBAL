@@ -20,7 +20,12 @@ const staffschema =new mongoose.Schema({
     },
     role:{
         type: String,
-        enum:["Admin", "Manager", "Sales Staff"],
+        enum:[
+            "Admin", 
+            "Manager", 
+            "Sales Staff",
+            "Store Keeper",
+        ],
         default:" Sales Staff"
     },
     password:{
@@ -31,7 +36,21 @@ const staffschema =new mongoose.Schema({
         type: String,
         enum:["Active", "Inactive"],
         default: "Active"
-    }
+    },
+    address:{
+        type: String,
+        required: true
+
+    },
+    gender:{
+        type: String,
+        enum:["Male","Female"],
+        required:true
+    },
+    profileImage:{
+        type: String,
+        default:""
+    },
 }, {
     timestamps: true
 });
