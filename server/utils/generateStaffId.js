@@ -7,3 +7,6 @@ const generateStaffId = async () => {
     }
     const lastNumber = parseInt(lastStaff.staffId.replace("GLG", ""));
     const newNumber = lastNumber + 1;
+    return `GLG${String(newNumber).padStart(3, "0")}`;
+};
+module.exports = generateStaffId;
