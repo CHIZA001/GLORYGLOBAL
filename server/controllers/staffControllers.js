@@ -36,5 +36,7 @@ const createStaff = async (req, res) => {
             email: newStaff.email,
             phone: newStaff.phone,
             role: newStaff.role,
+            address: newStaff.address,
+            gender: newStaff.gender
         }
     })
