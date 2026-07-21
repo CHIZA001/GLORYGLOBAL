@@ -39,4 +39,12 @@ const createStaff = async (req, res) => {
             address: newStaff.address,
             gender: newStaff.gender
         }
-    })
+    });
+} catch (error) {
+    console.error("Error creating staff:", error);
+    res.status(500).json({
+        message: "Server error while creating staff"
+    });
+}
+};
+module.exports = { createStaff};
