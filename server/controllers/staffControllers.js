@@ -1,7 +1,8 @@
-const staff = require("../models/Staff");
+const Staff = require("../models/Staff");
 const generateStaffId = require("../utils/generateStaffId");
 const bcrypt = require("bcrypt");
 const createStaff = async (req, res) => {
+    try {
     const { fullName, email, phone, role, password, address, gender } = req.body;
     if(!fullName || !email || !phone || !password ||!address || !gender){
         return res.status(400).json({
@@ -12,7 +13,7 @@ const createStaff = async (req, res) => {
 
     if (existingStaff) {
         return res.status(400).json({
-            meessage:"A staff member with this email already exists"
+            message:"A staff member with this email already exists"
         });
     }
     const staffId = await generateStaffId();
