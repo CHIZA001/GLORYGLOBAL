@@ -6,9 +6,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const staffRoutes = require("./routes/staffRoutes")
 // Middleware
-app.use("/api/staff", staffRoutes);
 app.use(express.json());
 app.use(cors());
+// Staff Routes
+app.use("/api/staff", staffRoutes);
 //Home Route
 app.get('/',(req, res) => {
     res.send('Welcome to Glory Global Merchandise Inventory Management System');});
