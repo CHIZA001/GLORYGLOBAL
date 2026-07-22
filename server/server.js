@@ -4,8 +4,10 @@ const cors = require('cors');
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 5000;
+const staffRoutes = require("./routes/staffRoutes")
 // Middleware
-app.use(express.json())
+app.use("/api/staff", staffRoutes);
+app.use(express.json());
 app.use(cors());
 //Home Route
 app.get('/',(req, res) => {

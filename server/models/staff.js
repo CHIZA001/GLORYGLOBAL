@@ -26,7 +26,7 @@ const staffschema =new mongoose.Schema({
             "Sales Staff",
             "Store Keeper",
         ],
-        default:" Sales Staff"
+        default:"Sales Staff"
     },
     password:{
         type: String,
@@ -54,4 +54,4 @@ const staffschema =new mongoose.Schema({
 }, {
     timestamps: true
 });
-module.exports = mongoose.model("Staff", staffSchema)
+module.exports = mongoose.model("Staff", staffschema)
