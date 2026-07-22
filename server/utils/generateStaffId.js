@@ -2,7 +2,7 @@ const Staff = require("../models/Staff");
 
 const generateStaffId = async () => {
     const lastStaff = await Staff.findOne().sort({ staffId: -1 });
-    if (!laststaff) {
+    if (!lastStaff) {
         return "GLG001";
     }
     const lastNumber = parseInt(lastStaff.staffId.replace("GLG", ""));
