@@ -48,6 +48,7 @@ const createStaff = async (req, res) => {
     });
 }
 };
+//This code for collection of all the staff Id in the database for history check purpose
 const getAllStaff = async (req, res) => {
     try{
         const staff = await Staff.find().select("-password");
