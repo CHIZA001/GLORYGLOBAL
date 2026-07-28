@@ -64,4 +64,7 @@ const getAllStaff = async (req, res) => {
         });
     }
 };
-module.exports = { createStaff};
+module.exports = { 
+    createStaff,
+    getAllStaff
+};
