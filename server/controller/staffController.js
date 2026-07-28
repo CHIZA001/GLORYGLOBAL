@@ -68,3 +68,30 @@ module.exports = {
     createStaff,
     getAllStaff
 };
+const updateStaff = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const updatedStaff = await Staff.findByIdAndUpdate(
+            id,
+            req.body,
+            { new: true }
+        );
+
+        if (!updatedStaff) {
+            return res.status(404).json({
+                message: "Staff not found"
+            });
+        }
+
+        res.status(200).json({
+            message: "Staff updated successfully",
+            staff: updatedStaff
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
