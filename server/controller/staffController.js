@@ -48,4 +48,19 @@ const createStaff = async (req, res) => {
     });
 }
 };
+const getAllStaff = async (req, res) => {
+    try{
+        const staff = await Staff.find().select("-password");
+
+        res.status(200).json({
+            count: staff.length,
+            staff
+        });
+    } catch (error) {
+        console.error("Error fetching staff:", error);
+        res.status(500).json({
+            message: "server error while fetching staff"
+        });
+    }
+};
 module.exports = { createStaff};
