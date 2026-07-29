@@ -1,7 +1,14 @@
 const express = require("express");
-const { createStaff, getAllStaff } = require("../controller/staffController");
+const { 
+    createStaff, 
+    getAllStaff,
+    getStaffById
+ }
+  = require("../controller/staffController");
 const router = express.Router();
 router.post("/", createStaff);
-// creates a new endpoint
+// Get all staff
 router.get("/", getAllStaff);
+// Get one staff by Staff ID
+router.get("/:staffId", getStaffById);
 module.exports = router;
