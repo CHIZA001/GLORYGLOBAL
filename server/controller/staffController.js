@@ -64,34 +64,53 @@ const getAllStaff = async (req, res) => {
         });
     }
 };
-module.exports = { 
-    createStaff,
-    getAllStaff
-};
-const updateStaff = async (req, res) => {
+const getStaffById = async (req, res) => {
     try {
-        const { id } = req.params;
-
-        const updatedStaff = await Staff.findByIdAndUpdate(
-            id,
-            req.body,
-            { new: true }
-        );
-
-        if (!updatedStaff) {
+        const { staffId } = req.params;
+        const staff = await Staff.findOne({ staffId }).select("-password");
+        if (!staff) {
             return res.status(404).json({
                 message: "Staff not found"
             });
         }
-
-        res.status(200).json({
-            message: "Staff updated successfully",
-            staff: updatedStaff
-        });
-
-    } catch (error) {
+        res.status(200).json(staff);
+    }
+    catch (error){
+        console.error("Error fetching staff:", error);
         res.status(500).json({
-            message: error.message
+            message:"Server error while fetching staff"
         });
     }
 };
+module.exports = { 
+    createStaff,
+    getAllStaff,
+    getStaffById
+};
+// const updateStaff = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+
+//         const updatedStaff = await Staff.findByIdAndUpdate(
+//             id,
+//             req.body,
+//             { new: true }
+//         );
+
+//         if (!updatedStaff) {
+//             return res.status(404).json({
+//                 message: "Staff not found"
+//             });
+//         }
+
+//         res.status(200).json({
+//             message: "Staff updated successfully",
+//             staff: updatedStaff
+//         });
+
+//     } catch (error) {
+//         res.status(500).json({
+//             message: error.message
+//         });
+//     }
+// };
