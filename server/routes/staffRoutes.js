@@ -3,7 +3,8 @@ const {
     createStaff, 
     getAllStaff,
     getStaffById,
-    updateStaff    
+    updateStaff,
+    deactivateStaff   
  }
   = require("../controller/staffController");
 const router = express.Router();
@@ -14,4 +15,6 @@ router.get("/", getAllStaff);
 router.get("/:staffId", getStaffById);
 // update the staff 
 router.put("/:staffId", updateStaff);
+// Delete or rather Deactivate Account
+router.patch("/:staffId/deactivate", deactivateStaff);
 module.exports = router;
