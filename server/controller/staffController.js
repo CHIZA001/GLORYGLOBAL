@@ -100,7 +100,7 @@ const updateStaff = async (req, res) => {
                 message: "Staff not found"
             });
         }
-        res.statu(200).json({
+        res.status(200).json({
             message: "Staf updated Successfully",
             staff: updatedStaff
         });
@@ -117,5 +117,5 @@ module.exports = {
     createStaff,
     getAllStaff,
     getStaffById,
-    updateStaffById
+    updateStaff
 };
