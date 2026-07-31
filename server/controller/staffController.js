@@ -109,7 +109,32 @@ const updateStaff = async (req, res) => {
     catch (error) {
         console.error("Error Updating staff:", error);
         res.status(500).json({
-            message: "Server error while updating staff"
+            message: "Server error while updating staff Try Again."
+        });
+    }
+};
+//Delete or rather Deactivating the account of the staff data or user
+const deactivateStaff = async (req, res) => {
+    try {
+        const { staffId } = req.params;
+        const staff = await Staff.findOne({ staffId });
+
+        if (!staff) {
+            return res.status(404).json({
+                message:"Staff not found."
+            });
+        }
+        staff.status = "Inactive";
+        await staff.save();
+        res.status(200).json({
+            message: "Staff deactivated Successfully. Thank you!",
+            staff:staff
+        });
+
+    } catch (error){
+        console.error("Error deactivating staff:",error);
+        res.status(500).json({
+            message:"Server error while deactivating staff Acount Check again!."            
         });
     }
 };
@@ -117,5 +142,6 @@ module.exports = {
     createStaff,
     getAllStaff,
     getStaffById,
-    updateStaff
+    updateStaff,
+    deactivateStaff
 };
