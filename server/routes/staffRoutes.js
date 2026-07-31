@@ -2,7 +2,8 @@ const express = require("express");
 const { 
     createStaff, 
     getAllStaff,
-    getStaffById
+    getStaffById,
+    updateStaffById    
  }
   = require("../controller/staffController");
 const router = express.Router();

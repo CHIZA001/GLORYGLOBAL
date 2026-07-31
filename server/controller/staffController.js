@@ -82,35 +82,40 @@ const getStaffById = async (req, res) => {
         });
     }
 };
+// updating to Exsiting Staff Id
+const updateStaff = async (req, res) => {
+    try {
+        const { staffId } = req.params;
+
+        const updatedStaff = await Staff.findOneAndUpdate(
+            { staffId },
+            req.body,
+            {
+                new: true,
+                runValidators: true
+            }
+        ).select("-password");
+        if (!updatedStaff) {
+            return res.status(404).json({
+                message: "Staff not found"
+            });
+        }
+        res.statu(200).json({
+            message: "Staf updated Successfully",
+            staff: updatedStaff
+        });
+
+    }
+    catch (error) {
+        console.error("Error Updating staff:", error);
+        res.status(500).json({
+            message: "Server error while updating staff"
+        });
+    }
+};
 module.exports = { 
     createStaff,
     getAllStaff,
-    getStaffById
+    getStaffById,
+    updateStaffById
 };
-// const updateStaff = async (req, res) => {
-//     try {
-//         const { id } = req.params;
-
-//         const updatedStaff = await Staff.findByIdAndUpdate(
-//             id,
-//             req.body,
-//             { new: true }
-//         );
-
-//         if (!updatedStaff) {
-//             return res.status(404).json({
-//                 message: "Staff not found"
-//             });
-//         }
-
-//         res.status(200).json({
-//             message: "Staff updated successfully",
-//             staff: updatedStaff
-//         });
-
-//     } catch (error) {
-//         res.status(500).json({
-//             message: error.message
-//         });
-//     }
-// };
