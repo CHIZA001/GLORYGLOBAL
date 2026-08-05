@@ -161,7 +161,7 @@ const loginStaff = async (req, res) => {
             message:"This staff account has been deactivated."
             });
        }
-       const isPaswordCorrect = await bcrypt.compare(
+       const isPasswordCorrect = await bcrypt.compare(
         password,
         staff.password
        );
