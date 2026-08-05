@@ -169,10 +169,27 @@ const loginStaff = async (req, res) => {
         return res.status(401).json({
             message: "Invalid email or password."
         });
-
+        
        }
+       const token = jwt.sign(
+        {
+            staffId: staff.staffId,
+            role: staff.role
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn:"7d"
+        }
+       );
        res.status(200).json({
-        message:"Login successful."
+        message:"Login successful.",
+        token,
+        staff: {
+            staffId: staff.staffId,
+            fullName: staff.fullName,
+            email: staff.email,
+            role: staff.role
+        }
        });    
     } catch (error){
         console.error("Login error:", error);

@@ -1,4 +1,5 @@
 const express = require("express");
+const authMiddleware = require("../middleware/authMiddleware");
 const { 
     createStaff, 
     getAllStaff,
@@ -11,7 +12,7 @@ const {
 const router = express.Router();
 router.post("/", createStaff);
 // Get all staff
-router.get("/", getAllStaff);
+router.get("/", authMiddleware, getAllStaff);
 // Get one staff by Staff ID
 router.get("/:staffId", getStaffById);
 // update the staff 
