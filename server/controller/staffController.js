@@ -139,6 +139,7 @@ const deactivateStaff = async (req, res) => {
         });
     }
 };
+// For Logining and error control
 const loginStaff = async (req, res) => {
     try {
         const { email, password } = req.body;
