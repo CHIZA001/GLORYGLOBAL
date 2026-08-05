@@ -1,6 +1,7 @@
 const Staff = require("../models/Staff");
 const generateStaffId = require("../utils/generateStaffId");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const createStaff = async (req, res) => {
     try {
     const { fullName, email, phone, role, password, address, gender } = req.body;
@@ -137,6 +138,48 @@ const deactivateStaff = async (req, res) => {
             message:"Server error while deactivating staff Acount Check again!."            
         });
     }
+};
+const loginStaff = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password){
+            return res.status(400).json({
+                message:"Email and password are required."
+            });
+        }
+
+       const staff = await Staff.findOne({ email });
+       if (!staff){
+        return res.status(404).json({
+            message: "Invalid email or password."
+        });
+
+       }
+       if (staff.status ==="Inactive"){
+        return res.status(403).json({
+            message:"This staff account has been deactivated."
+            });
+       }
+       const isPaswordCorrect = await bcrypt.compare(
+        password,
+        staff.password
+       );
+       if (!isPasswordCorrect) {
+        return res.status(401).json({
+            message: "Invalid email or password."
+        });
+
+       }
+       res.status(200).json({
+        message:"Login successful."
+       });    
+    } catch (error){
+        console.error("Login error:", error);
+        res.status(500).json({
+            message:"Server error while logging in, something is wrong."
+        });
+    }
+   
 };
 module.exports = { 
     createStaff,
