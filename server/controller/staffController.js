@@ -102,7 +102,7 @@ const updateStaff = async (req, res) => {
             });
         }
         res.status(200).json({
-            message: "Staf updated Successfully",
+            message: "Staff updated Successfully",
             staff: updatedStaff
         });
 
@@ -187,5 +187,6 @@ module.exports = {
     getAllStaff,
     getStaffById,
     updateStaff,
-    deactivateStaff
+    deactivateStaff,
+    loginStaff
 };
