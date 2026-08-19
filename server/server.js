@@ -4,12 +4,14 @@ const cors = require('cors');
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 5000;
-const staffRoutes = require("./routes/staffRoutes")
+const staffRoutes = require("./routes/staffRoutes");
+const productRoutes = require("./routes/productRoutes");
 // Middleware
 app.use(express.json());
 app.use(cors());
 // Staff Routes
 app.use("/api/staff", staffRoutes);
+app.use("/api/products", productRoutes);
 //Home Route
 app.get('/',(req, res) => {
     res.send('Welcome to Glory Global Merchandise Inventory Management System');});
