@@ -1,5 +1,5 @@
 const Product = require("../models/Product");
-
+// const express = require("express");
 // Create a new product
 const createProduct = async (req, res) => {
     try {
@@ -63,7 +63,7 @@ const createProduct = async (req, res) => {
         });
     }
 };
-const getAllproducts = async (req, res) => {
+const getAllProducts = async (req, res) => {
     try{
         const products = await Product.find();
         res.status(200).json({
@@ -78,7 +78,32 @@ const getAllproducts = async (req, res) => {
         });
     }
 };
+const getProductByCode = async (req, res) => {
+    try {
+        const { productCode } = req.params;
+
+        const product = await Product.findOne({ productCode });
+
+        if (!product) {
+            return res.status(404).json({
+                message: "Product not found"
+            });
+        }
+
+        res.status(200).json({
+            product
+        });
+
+    } catch (error) {
+        console.error("Error fetching product:", error);
+
+        res.status(500).json({
+            message: "Server error while fetching product"
+        });
+    }
+};
 module.exports = {
     createProduct,
-    getAllproducts
+    getAllProducts,
+    getProductByCode
 };
