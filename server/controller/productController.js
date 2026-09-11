@@ -102,8 +102,51 @@ const getProductByCode = async (req, res) => {
         });
     }
 };
+const updateProduct = async (req, res) => {
+    try {
+        const { productCode } = req.params;
+        const product = await Product.findOne({ productCode});
+        if (!product) {
+            return res.status(404).json({
+                message: "product not found"
+            });
+        }
+
+        const{ 
+            productName,
+            category,
+            supplier,
+            costPrice,
+            sellingPrice,
+            lowStockLevel,
+            description
+        } = req.body;
+        if (productName !==undefined) product.productName = productName;
+        if (category !== undefined) product.category = category;
+        if (supplier !==undefined) product.supplier = supplier;
+        if (costPrice !==undefined) product.costPrice = costPrice;
+        if (sellingPrice !== undefined) product.sellingPrice = sellingPrice;
+        if (lowStockLevel !== undefined) product.lowStockLevel = lowStockLevel;
+        if (description !== undefined) product.description = description;
+
+        await product.save();
+        res.status(200).json({
+            message: "Product updated successfully",
+            product
+        });
+    } catch (error) {
+        console.error("Error updating product:", error);
+        res.status(500).json({
+            message: "server error while updating product"
+        });
+    }
+}
 module.exports = {
     createProduct,
+    // getProducts,
+    // getProductById,
     getAllProducts,
-    getProductByCode
+    getProductByCode,
+    updateProduct,
+    deleteProduct
 };
