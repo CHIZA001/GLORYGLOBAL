@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 5000;
 // Import Routes
 const staffRoutes = require("./routes/staffRoutes");
 const productRoutes = require("./routes/productRoutes");
+const inventoryRoutes = require("./routes/inventoryRoutes");
 
 // Middleware
 app.use(express.json());
@@ -20,6 +21,7 @@ app.use("/api/staff", staffRoutes);
 
 // Product Routes
 app.use("/api/products", productRoutes);
+app.use("/api/inventory", inventoryRoutes);
 
 // Home Route
 app.get("/", (req, res) => {
