@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 5000;
 const staffRoutes = require("./routes/staffRoutes");
 const productRoutes = require("./routes/productRoutes");
 const inventoryRoutes = require("./routes/inventoryRoutes");
+const salesRoutes = require("./routes/salesRoutes");
 
 // Middleware
 app.use(express.json());
@@ -27,6 +28,8 @@ app.use("/api/inventory", inventoryRoutes);
 app.get("/", (req, res) => {
     res.send("Welcome to Glory Global Merchandise Inventory Management System");
 });
+// Sales Routes
+app.use("/api/sales", salesRoutes);
 
 // Connect to MongoDB Atlas
 mongoose.connect(process.env.MONGODB_URI)
