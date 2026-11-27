@@ -338,8 +338,101 @@ const getSaleBySaleNumber = async (req, res) => {
         });
     }
 };
+// RECORD ADDITIONAL PAYMENT
+const addSalePayment = async (req, res) => {
+    try {
+        const { saleNumber } = req.params;
+        const { amount, paymentMethod, receivedBy, reference } = req.body;
+
+        // Validate payment amount
+        if (
+            typeof amount !== "number" ||
+            !Number.isFinite(amount) ||
+            amount <= 0
+        ) {
+            return res.status(400).json({
+                message: "Enter a valid payment amount"
+            });
+        }
+
+        // Validate payment method
+        if (!["Cash", "Transfer", "POS"].includes(paymentMethod)) {
+            return res.status(400).json({
+                message: "Invalid payment method"
+            });
+        }
+
+        // Validate receiver
+        if (typeof receivedBy !== "string" || !receivedBy.trim()) {
+            return res.status(400).json({
+                message: "Person receiving payment is required"
+            });
+        }
+
+        const sale = await Sale.findOne({ saleNumber });
+
+        if (!sale) {
+            return res.status(404).json({
+                message: "Sale not found"
+            });
+        }
+
+        if (sale.balanceDue <= 0) {
+            return res.status(400).json({
+                message: "This sale has already been fully paid"
+            });
+        }
+
+        if (amount > sale.balanceDue) {
+            return res.status(400).json({
+                message: `Payment exceeds outstanding balance of ${sale.balanceDue}`
+            });
+        }
+
+        // Add payment record
+        sale.payments.push({
+            amount,
+            paymentMethod,
+            receivedBy: receivedBy.trim(),
+            reference: reference || "",
+            paidAt: new Date()
+        });
+
+        // Update payment totals
+        sale.amountPaid = Number(
+            (sale.amountPaid + amount).toFixed(2)
+        );
+
+        sale.balanceDue = Number(
+            (sale.totalAmount - sale.amountPaid).toFixed(2)
+        );
+
+        // Update payment status
+        if (sale.balanceDue === 0) {
+            sale.paymentStatus = "PAID";
+        } else {
+            sale.paymentStatus = "PARTIALLY_PAID";
+        }
+
+        await sale.save();
+
+        res.status(200).json({
+            message: "Payment recorded successfully",
+            sale
+        });
+
+    } catch (error) {
+        console.error("Add sale payment error:", error);
+
+        res.status(500).json({
+            message: "Failed to record payment",
+            error: error.message
+        });
+    }
+};
 module.exports = {
     createSale,
     getAllSales,
-    getSaleBySaleNumber
+    getSaleBySaleNumber,
+    addSalePayment
 };

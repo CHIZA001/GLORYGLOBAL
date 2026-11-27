@@ -16,4 +16,7 @@ router.get("/", getAllSales);
 // GET INDIVIDUAL SALE
 router.get("/:saleNumber", getSaleBySaleNumber);
 
+// RECORD ADDITIONAL PAYMENT
+router.post("/:saleNumber/payments", addSalePayment);
+
 module.exports = router;
