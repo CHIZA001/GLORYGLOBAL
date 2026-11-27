@@ -244,6 +244,102 @@ const createSale = async (req, res) => {
     }
 };
 
+// GET ALL SALES WITH SEARCH AND FILTERS
+const getAllSales = async (req, res) => {
+    try {
+        const {
+            search,
+            salesperson,
+            paymentStatus,
+            startDate,
+            endDate
+        } = req.query;
+
+        const filter = {};
+
+        // SEARCH BY SALE NUMBER OR CUSTOMER
+        if (search) {
+            filter.$or = [
+                { saleNumber: { $regex: search, $options: "i" } },
+                { customerName: { $regex: search, $options: "i" } }
+            ];
+        }
+
+        // FILTER BY SALESPERSON
+        if (salesperson) {
+            filter.salesperson = {
+                $regex: salesperson,
+                $options: "i"
+            };
+        }
+
+        // FILTER BY PAYMENT STATUS
+        if (paymentStatus) {
+            filter.paymentStatus = paymentStatus.toUpperCase();
+        }
+
+        // FILTER BY DATE
+        if (startDate || endDate) {
+            filter.createdAt = {};
+
+            if (startDate) {
+                filter.createdAt.$gte = new Date(startDate);
+            }
+
+            if (endDate) {
+                const end = new Date(endDate);
+                end.setHours(23, 59, 59, 999);
+                filter.createdAt.$lte = end;
+            }
+        }
+
+        const sales = await Sale.find(filter)
+            .sort({ createdAt: -1 });
+
+        res.status(200).json({
+            count: sales.length,
+            sales
+        });
+
+    } catch (error) {
+        console.error("Get sales error:", error);
+
+        res.status(500).json({
+            message: "Failed to retrieve sales",
+            error: error.message
+        });
+    }
+};
+// GET INDIVIDUAL SALE DETAILS
+const getSaleBySaleNumber = async (req, res) => {
+    try {
+        const { saleNumber } = req.params;
+
+        const sale = await Sale.findOne({ saleNumber })
+            .populate("items.product", "productCode productName");
+
+        if (!sale) {
+            return res.status(404).json({
+                message: "Sale not found"
+            });
+        }
+
+        res.status(200).json({
+            message: "Sale retrieved successfully",
+            sale
+        });
+
+    } catch (error) {
+        console.error("Get individual sale error:", error);
+
+        res.status(500).json({
+            message: "Failed to retrieve sale",
+            error: error.message
+        });
+    }
+};
 module.exports = {
-    createSale
+    createSale,
+    getAllSales,
+    getSaleBySaleNumber
 };
